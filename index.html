@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en" class="bg-black text-zinc-300">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XF // CORE_UTILITY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'JetBrains+Mono', monospace;
+            background-color: #050505;
+            overflow: hidden;
+        }
+        canvas#particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+        .sidebar-item-active {
+            background: linear-gradient(90deg, rgba(124, 58, 237, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+            border-left: 3px solid #7c3aed;
+            color: #f4f4f5;
+        }
+        .mobile-item-active {
+            border-top: 2px solid #7c3aed;
+            color: #a78bfa;
+            background: rgba(124, 58, 237, 0.05);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #18181b;
+        }
+        .neon-purple { color: #a78bfa; text-shadow: 0 0 8px rgba(139, 92, 246, 0.3); }
+        .neon-red { color: #f43f5e; text-shadow: 0 0 8px rgba(244, 63, 94, 0.3); }
+        .bg-neon-purple { background-color: #7c3aed; }
+        .border-neon-purple { border-color: #4c1d95; }
+        
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-pulse-subtle { animation: pulse-subtle 3s infinite ease-in-out; }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@0.460.0"
+  }
+}
+</script>
+</head>
+<body class="selection:bg-purple-500/30">
+    <canvas id="particles"></canvas>
+    <div id="root" class="relative z-10"></div>
+    <script>
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            for(let i = 0; i < 60; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.3,
+                    size: Math.random() * 1.5
+                });
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(124, 58, 237, 0.5)';
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        animate();
+    </script>
+</body>
+</html>
