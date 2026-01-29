@@ -1,0 +1,5 @@
+{
+  "name": "XF Obfuscation",
+  "description": "Internal script transformation utility for Luau environment. Technical use only.",
+  "requestFramePermissions": []
+}
